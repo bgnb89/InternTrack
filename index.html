@@ -11,7 +11,7 @@
 
 <body class="bg-gray-100 pb-24">
 
-<div class="max-w-5xl mx-auto bg-white p-4 rounded-xl shadow space-y-5">
+<div class="max-w-5xl mx-auto bg-white p-4 md:p-6 rounded-xl shadow space-y-5">
 
 <h2 class="text-xl font-bold text-center">Store Audit App</h2>
 
@@ -38,11 +38,23 @@
 </button>
 
 <!-- AVAILABILITY -->
-<select id="category" class="border p-3 w-full rounded-lg mt-3"></select>
-<div id="productList" class="mt-2"></div>
+<div>
+<h3 class="font-semibold text-lg">Availability</h3>
+
+<select id="category" class="border p-3 w-full rounded-lg mt-2"></select>
+
+<div id="productList" class="mt-3 space-y-2"></div>
+
+<div class="mt-2 font-medium">
+Availability %: <span id="availabilityPct">0</span>
+</div>
+</div>
 
 <!-- SOS -->
-<select id="shelfCategory" class="border p-3 w-full rounded-lg mt-3"></select>
+<div>
+<h3 class="font-semibold text-lg">Share of Shelf</h3>
+
+<select id="shelfCategory" class="border p-3 w-full rounded-lg mt-2"></select>
 
 <input id="totalFacings" type="number" inputmode="numeric" class="border p-3 w-full mt-2 rounded-lg" placeholder="Total Facings">
 <input id="ourFacings" type="number" inputmode="numeric" class="border p-3 w-full mt-2 rounded-lg" placeholder="Our Facings">
@@ -51,16 +63,26 @@
 Add to Report
 </button>
 
-<table class="w-full border mt-3">
+<div class="overflow-x-auto mt-3">
+<table class="w-full border text-sm">
+<thead class="bg-gray-200">
+<tr><th>Category</th><th>Total</th><th>Our</th><th>%</th></tr>
+</thead>
 <tbody id="shelfTableBody"></tbody>
 </table>
+</div>
+</div>
 
 </div>
 
 <!-- ACTION BAR -->
 <div class="fixed bottom-0 left-0 right-0 bg-white border-t p-3 flex gap-2">
-<button onclick="downloadExcel()" class="bg-green-600 text-white flex-1 p-3 rounded-lg">Download</button>
-<button onclick="shareExcel()" class="bg-purple-600 text-white flex-1 p-3 rounded-lg">Share</button>
+
+<button onclick="downloadExcel()" class="bg-green-600 text-white flex-1 p-3 rounded-lg text-sm">Download</button>
+<button onclick="shareExcel()" class="bg-purple-600 text-white flex-1 p-3 rounded-lg text-sm">Share</button>
+<button onclick="saveDraft()" class="bg-yellow-500 flex-1 p-3 rounded-lg text-sm">Save</button>
+<button onclick="clearDraft()" class="bg-red-500 text-white flex-1 p-3 rounded-lg text-sm">Clear</button>
+
 </div>
 
 <script>
@@ -902,65 +924,178 @@ const shelfReportData = [];
 const accountSelect = document.getElementById("account");
 const outletSelect = document.getElementById("outlet");
 const categorySelect = document.getElementById("category");
+const shelfCategory = document.getElementById("shelfCategory");
+const shelfTableBody = document.getElementById("shelfTableBody");
 
-// ===== INIT =====
 document.getElementById("dateTime").value = new Date().toLocaleString();
 
+// ===== LOCATION =====
 function captureLocation(){
-navigator.geolocation.getCurrentPosition(pos=>{
-gps.value = pos.coords.latitude+","+pos.coords.longitude;
-});
+navigator.geolocation.getCurrentPosition(
+(pos)=>{ gps.value = pos.coords.latitude.toFixed(5)+","+pos.coords.longitude.toFixed(5); },
+()=>{ alert("Please allow location access"); }
+);
 }
 
-// ===== ACCOUNT =====
-accountSelect.innerHTML='<option>Select Account</option>';
+// ===== ACCOUNT LOAD =====
+accountSelect.innerHTML = `<option value="">Select Account</option>`;
 [...new Set(outlets.map(x=>x.account))].forEach(a=>{
-accountSelect.innerHTML+=`<option>${a}</option>`;
+accountSelect.innerHTML += `<option value="${a}">${a}</option>`;
 });
 
-accountSelect.onchange=()=>{
-const acc=accountSelect.value;
+accountSelect.onchange = () => {
 
-outletSelect.innerHTML='';
+const acc = accountSelect.value;
+
+outletSelect.innerHTML = `<option value="">Select Outlet</option>`;
 outlets.filter(x=>x.account===acc).forEach(x=>{
-outletSelect.innerHTML+=`<option>${x.name}</option>`;
+outletSelect.innerHTML += `<option value="${x.name}">${x.name}</option>`;
 });
 
-categorySelect.innerHTML='';
+categorySelect.innerHTML = "";
+shelfCategory.innerHTML = "";
+
 [...new Set(skuMaster.filter(x=>x.account===acc).map(x=>x.category))]
 .forEach(c=>{
-categorySelect.innerHTML+=`<option>${c}</option>`;
+categorySelect.innerHTML += `<option value="${c}">${c}</option>`;
+shelfCategory.innerHTML += `<option value="${c}">${c}</option>`;
 });
 
 loadProducts();
 };
 
-categorySelect.onchange=loadProducts;
+categorySelect.onchange = loadProducts;
 
 // ===== PRODUCTS =====
 function loadProducts(){
-const list=skuMaster.filter(x=>x.account===accountSelect.value && x.category===categorySelect.value);
-productList.innerHTML='';
-list.forEach(p=>{
-const checked=(selectedProductsByCategory[categorySelect.value]||[]).includes(p.skuName);
-productList.innerHTML+=`<label><input type="checkbox" value="${p.skuName}" ${checked?"checked":""} onchange="updateSel()"> ${p.skuName}</label><br>`;
+const list = skuMaster.filter(x=>x.account===accountSelect.value && x.category===categorySelect.value);
+
+productList.innerHTML="";
+
+list.forEach(item=>{
+const checked = (selectedProductsByCategory[categorySelect.value]||[]).includes(item.skuName);
+
+productList.innerHTML += `
+<label class="flex items-center gap-2 bg-gray-50 p-2 rounded">
+<input type="checkbox" value="${item.skuName}" ${checked?"checked":""}
+onchange="updateSelection()">
+<span>${item.skuName}</span>
+</label>`;
+});
+
+calcAvailability();
+}
+
+function updateSelection(){
+selectedProductsByCategory[categorySelect.value] =
+[...document.querySelectorAll("#productList input:checked")].map(x=>x.value);
+
+calcAvailability();
+}
+
+function calcAvailability(){
+const total = document.querySelectorAll("#productList input").length;
+const sel = document.querySelectorAll("#productList input:checked").length;
+availabilityPct.innerText = total?((sel/total)*100).toFixed(1):0;
+}
+
+// ===== SHELF =====
+function addShelf(){
+const cat = shelfCategory.value;
+const total = +totalFacings.value||0;
+const ours = +ourFacings.value||0;
+
+if(!cat || total<=0){
+alert("Enter valid data");
+return;
+}
+
+const pct = ((ours/total)*100).toFixed(1);
+
+const idx = shelfReportData.findIndex(x=>x.category===cat);
+
+const row = {category:cat,totalFacings:total,ourFacings:ours,sharePct:pct};
+
+if(idx>=0) shelfReportData[idx]=row;
+else shelfReportData.push(row);
+
+renderShelf();
+
+totalFacings.value="";
+ourFacings.value="";
+shelfCategory.selectedIndex=0;
+}
+
+function renderShelf(){
+shelfTableBody.innerHTML="";
+shelfReportData.forEach(r=>{
+const tr=document.createElement("tr");
+tr.innerHTML=`
+<td class="border p-2">${r.category}</td>
+<td class="border p-2">${r.totalFacings}</td>
+<td class="border p-2">${r.ourFacings}</td>
+<td class="border p-2">${r.sharePct}%</td>`;
+shelfTableBody.appendChild(tr);
 });
 }
 
-function updateSel(){
-selectedProductsByCategory[categorySelect.value]=[...document.querySelectorAll("#productList input:checked")].map(x=>x.value);
+// ===== DRAFT =====
+function saveDraft(){
+localStorage.setItem("draft", JSON.stringify({
+intern:intern.value,
+account:accountSelect.value,
+outlet:outletSelect.value,
+selectedProductsByCategory,
+shelfReportData
+}));
+alert("Saved");
+}
+
+window.onload = ()=>{
+const d = JSON.parse(localStorage.getItem("draft")||"null");
+if(!d) return;
+
+intern.value = d.intern || "";
+accountSelect.value = d.account;
+accountSelect.onchange();
+
+setTimeout(()=>{
+outletSelect.value = d.outlet;
+Object.assign(selectedProductsByCategory,d.selectedProductsByCategory||{});
+shelfReportData.push(...(d.shelfReportData||[]));
+renderShelf();
+loadProducts();
+},100);
+};
+
+function clearDraft(){
+localStorage.removeItem("draft");
+location.reload();
 }
 
 // ===== EXCEL =====
+function buildSummary(){
+return [{
+Account:accountSelect.value,
+Outlet:outletSelect.value,
+Intern:intern.value,
+GPS:gps.value,
+DateTime:dateTime.value
+}];
+}
+
 function buildAvailability(){
 const rows=[];
 Object.keys(selectedProductsByCategory).forEach(cat=>{
-const sel=selectedProductsByCategory[cat]||[];
+const all = skuMaster.filter(x=>x.account===accountSelect.value && x.category===cat);
+const sel = selectedProductsByCategory[cat]||[];
+
 rows.push({
 Account:accountSelect.value,
 Outlet:outletSelect.value,
 Category:cat,
-Available:sel.join(", ")
+Available:sel.join(", "),
+AvailabilityPercent:all.length?((sel.length/all.length)*100).toFixed(1):0
 });
 });
 return rows;
@@ -970,8 +1105,8 @@ function buildNotAvailable(){
 const rows=[];
 
 Object.keys(selectedProductsByCategory).forEach(cat=>{
-const all=skuMaster.filter(x=>x.account===accountSelect.value && x.category===cat);
-const sel=selectedProductsByCategory[cat]||[];
+const all = skuMaster.filter(x=>x.account===accountSelect.value && x.category===cat);
+const sel = selectedProductsByCategory[cat]||[];
 
 all.forEach(sku=>{
 if(!sel.includes(sku.skuName)){
@@ -988,10 +1123,23 @@ SKUName:sku.skuName
 return rows;
 }
 
-function createWorkbook(){
-const wb=XLSX.utils.book_new();
+function buildSOS(){
+return shelfReportData.map(r=>({
+Account:accountSelect.value,
+Outlet:outletSelect.value,
+Category:r.category,
+Total:r.totalFacings,
+Our:r.ourFacings,
+Share:r.sharePct
+}));
+}
 
+function createWorkbook(){
+const wb = XLSX.utils.book_new();
+
+XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(buildSummary()),"Summary");
 XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(buildAvailability()),"Availability");
+XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(buildSOS()),"SOS Check");
 XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(buildNotAvailable()),"Not Available SKUs");
 
 return wb;
@@ -1003,7 +1151,7 @@ XLSX.writeFile(createWorkbook(),"StoreAudit.xlsx");
 
 async function shareExcel(){
 downloadExcel();
-alert("Download complete. Share manually.");
+alert("File downloaded. Please share manually.");
 }
 
 </script>
