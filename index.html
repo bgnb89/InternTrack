@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Store Audit App - V4.4</title>
+<title>Store Audit App - V4.5</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
@@ -15,7 +15,6 @@
 
 <h2 class="text-xl font-bold text-center">Store Audit App</h2>
 
-<!-- INTERN -->
 <select id="intern" class="border p-3 w-full rounded-lg">
 <option value="">Select Intern</option>
 <option>Sanjay</option>
@@ -33,6 +32,10 @@
 <select id="outlet" class="border p-3 w-full rounded-lg"></select>
 
 <input id="gps" class="border p-3 w-full bg-gray-100 rounded-lg" readonly>
+
+<button onclick="captureLocation()" class="bg-gray-700 text-white w-full p-3 rounded-lg">
+Capture Location
+</button>
 
 <!-- AVAILABILITY -->
 <div>
@@ -75,7 +78,7 @@ Add to Report
 
 </div>
 
-<!-- ✅ STICKY ACTION BAR -->
+<!-- ACTION BAR -->
 <div class="fixed bottom-0 left-0 right-0 bg-white border-t p-3 flex gap-2">
 
 <button onclick="downloadExcel()" class="bg-green-600 text-white flex-1 p-3 rounded-lg text-sm">
@@ -941,18 +944,35 @@ const shelfTableBody = document.getElementById("shelfTableBody");
 // ===== INIT =====
 document.getElementById("dateTime").value = new Date().toLocaleString();
 
-navigator.geolocation?.getCurrentPosition(p=>{
-gps.value = p.coords.latitude.toFixed(5)+","+p.coords.longitude.toFixed(5);
-});
+// ===== LOCATION FIX =====
+function captureLocation(){
+if(!navigator.geolocation){
+alert("Geolocation not supported");
+return;
+}
 
-// Load accounts
+navigator.geolocation.getCurrentPosition(
+(pos)=>{
+gps.value = pos.coords.latitude.toFixed(5)+","+pos.coords.longitude.toFixed(5);
+},
+()=>{
+alert("Location permission denied or failed");
+},
+{
+enableHighAccuracy:true,
+timeout:10000
+}
+);
+}
+
+// ===== ACCOUNT LOAD =====
 accountSelect.innerHTML = `<option value="">Select Account</option>`;
 [...new Set(outlets.map(x=>x.account))].forEach(a=>{
 accountSelect.innerHTML += `<option value="${a}">${a}</option>`;
 });
 
-// Account change
 accountSelect.onchange = () => {
+
 const acc = accountSelect.value;
 
 outletSelect.innerHTML = `<option value="">Select Outlet</option>`;
@@ -1156,6 +1176,7 @@ function downloadExcel(){
 XLSX.writeFile(createWorkbook(), getFileName());
 }
 
+// ===== SHARE FIX =====
 async function shareExcel(){
 try{
 const wb = createWorkbook();
@@ -1166,12 +1187,19 @@ type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
 });
 
 if(navigator.share){
+try{
 await navigator.share({files:[file]});
-}else{
-alert("Sharing not supported. Use Download.");
-}
+return;
 }catch(e){
-alert("Share failed");
+console.log("Share failed, fallback");
+}
+}
+
+downloadExcel();
+alert("File downloaded. Please share manually.");
+
+}catch(e){
+alert("Share failed. Use Download.");
 }
 }
 
