@@ -1306,7 +1306,10 @@ return wb;
 }
 
 function downloadExcel(){
-XLSX.writeFile(createWorkbook(),"StoreAudit.xlsx");
+  XLSX.writeFile(
+    createWorkbook(),
+    `${accountSelect.value} - ${outletSelect.value} - ${intern.value} - ${new Date().toISOString().split('T')[0]}.xlsx`
+  );
 }
 
 async function shareExcel(){
