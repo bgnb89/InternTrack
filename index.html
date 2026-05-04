@@ -3,87 +3,84 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Store Audit App - V4.6</title>
+<title>Store Audit App V5.4 stable - 03.05.26</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 </head>
 
-<body class="bg-gray-100 pb-24">
+<body class="bg-gray-100 pb-28">
 
-<div class="max-w-5xl mx-auto bg-white p-4 md:p-6 rounded-xl shadow space-y-5">
+<div class="max-w-5xl mx-auto bg-white p-4 rounded-xl shadow space-y-4">
 
 <h2 class="text-xl font-bold text-center">Store Audit App</h2>
 
-<select id="intern" class="border p-3 w-full rounded-lg">
+<select id="intern" class="border p-2 w-full rounded">
 <option value="">Select Intern</option>
-<option>Sanjay</option>
-<option>Ajay</option>
-<option>Akshay</option>
-<option>Abhiram</option>
-<option>Hiba</option>
-<option>Krishnendu</option>
-<option>Megha</option>
-<option>Prabhath Mathew</option>
+<option>Sanjay</option><option>Ajay</option><option>Akshay</option>
+<option>Abhiram</option><option>Hiba</option><option>Krishnendu</option><option>Megha</option><option>Prabhath</option>
 </select>
 
-<input id="dateTime" class="border p-3 w-full bg-gray-100 rounded-lg" readonly>
+<input id="dateTime" class="border p-2 w-full bg-gray-100 rounded" readonly>
 
-<select id="account" class="border p-3 w-full rounded-lg"></select>
-<select id="outlet" class="border p-3 w-full rounded-lg"></select>
+<select id="account" class="border p-2 w-full rounded"></select>
+<select id="outlet" class="border p-2 w-full rounded"></select>
 
-<input id="gps" class="border p-3 w-full bg-gray-100 rounded-lg" readonly>
-
-<button onclick="captureLocation()" class="bg-blue-700 text-white w-full p-3 rounded-lg">
-📍 Capture Location
-</button>
+<input id="gps" class="border p-2 w-full bg-gray-100 rounded" readonly>
+<button onclick="captureLocation()" class="bg-blue-600 text-white w-full p-2 rounded">📍 Capture Location</button>
 
 <!-- AVAILABILITY -->
-<div>
-<h3 class="font-semibold text-lg">Availability</h3>
-
-<select id="category" class="border p-3 w-full rounded-lg mt-2"></select>
-
-<div id="productList" class="mt-3 space-y-2"></div>
-
-<div class="mt-2 font-medium">
-Availability %: <span id="availabilityPct">0</span>
-</div>
-</div>
+<select id="category" class="border p-2 w-full rounded"></select>
+<div id="productList"></div>
+<div class="font-medium">Availability %: <span id="availabilityPct">0</span></div>
 
 <!-- SOS -->
-<div>
-<h3 class="font-semibold text-lg">Share of Shelf</h3>
+<select id="shelfCategory" class="border p-2 w-full rounded"></select>
+<input id="totalFacings" type="number" inputmode="numeric" class="border p-2 w-full rounded" placeholder="Total Facings">
+<input id="ourFacings" type="number" inputmode="numeric" class="border p-2 w-full rounded" placeholder="Our Facings">
+<select id="eyeLevel" class="border p-2 w-full rounded">
+<option value="">Products at eye level?</option>
+<option value="Yes">Yes</option>
+<option value="No">No</option>
+</select>
 
-<select id="shelfCategory" class="border p-3 w-full rounded-lg mt-2"></select>
+<input id="additionalVisibility" type="number" inputmode="numeric"
+class="border p-2 w-full rounded"
+placeholder="No of additional visibilities">
 
-<input id="totalFacings" type="number" inputmode="numeric" class="border p-3 w-full mt-2 rounded-lg" placeholder="Total Facings">
-<input id="ourFacings" type="number" inputmode="numeric" class="border p-3 w-full mt-2 rounded-lg" placeholder="Our Facings">
+<button onclick="addShelf()" class="bg-blue-600 text-white w-full p-2 rounded">Add to Report</button>
 
-<button onclick="addShelf()" class="bg-blue-600 text-white w-full p-3 mt-2 rounded-lg">
-Add to Report
-</button>
-
-<div class="overflow-x-auto mt-3">
-<table class="w-full border text-sm">
+<table class="w-full border text-sm mt-2">
 <thead class="bg-gray-200">
-<tr><th>Category</th><th>Total</th><th>Our</th><th>%</th></tr>
-</thead>
-<tbody id="shelfTableBody"></tbody>
+<tr>
+<th>Category</th>
+<th>Total</th>
+<th>Our</th>
+<th>%</th>
+<th>Eye Level</th>
+<th>Additional Visibilities</th>
+</tr>
+</thead><tbody id="shelfTableBody"></tbody>
 </table>
+
+<!-- PROMO -->
+<div id="promoSection" style="display:none;">
+<h3 class="font-bold mt-3">Promo Check</h3>
+<div id="promoList" class="space-y-2"></div>
+<div class="font-medium">Promo %: <span id="promoPct">0</span></div>
 </div>
-</div>
+
+<!-- RATING -->
+<div class="text-center font-bold text-xl">Rating: <span id="rating">0</span>/10</div>
 
 </div>
 
 <!-- ACTION BAR -->
-<div class="fixed bottom-0 left-0 right-0 bg-white border-t p-3 flex gap-2">
-
-<button onclick="downloadExcel()" class="bg-green-600 text-white flex-1 p-3 rounded-lg text-sm">Download</button>
-<button onclick="shareExcel()" class="bg-purple-600 text-white flex-1 p-3 rounded-lg text-sm">Share</button>
-<button onclick="saveDraft()" class="bg-yellow-500 flex-1 p-3 rounded-lg text-sm">Save</button>
-<button onclick="clearDraft()" class="bg-red-500 text-white flex-1 p-3 rounded-lg text-sm">Clear</button>
-
+<div class="fixed bottom-0 left-0 right-0 bg-white border-t p-2 grid grid-cols-4 gap-2 text-xs">
+<button onclick="downloadExcel()" class="bg-green-600 text-white p-2 rounded">Download</button>
+<button onclick="shareExcel()" class="bg-purple-600 text-white p-2 rounded">Share</button>
+<button onclick="saveDraft()" class="bg-yellow-500 p-2 rounded">Save</button>
+<button onclick="clearDraft()" class="bg-red-500 text-white p-2 rounded">Clear</button>
 </div>
 
 <script>
@@ -120,8 +117,12 @@ const outlets = [
   { account: "Reliance", name: "Unichira", city: "Cochin" },
 
   { account: "Kalyan", name: "North Bus Stand", city: "Thrissur" },
+ { account: "Elite", name: "North Bus Stand", city: "Thrissur" },
+ { account: "Elite", name: "Poonkunnam", city: "Thrissur" },
+ { account: "Elite", name: "Ayyanthol", city: "Thrissur" },
    { account: "Emke", name: "Chavakkad", city: "Thrissur" }
 ];
+
 
 const skuMaster = [
   { account: "Lulu", category: "Ingredients", skuCode: "fgvin01", skuName: "D/Horse Synthetic Vinegar 1L", mrp: "49" },
@@ -1071,101 +1072,256 @@ const skuMaster = [
 { account: "Emke", category: "Grain", skuCode: "SMR05", skuName: "SINGLE MATTA 5KG", mrp: "348" },
 { account: "Emke", category: "Grain", skuCode: "SMR10", skuName: "SINGLE MATTA 10KG", mrp: "689" },
 { account: "Emke", category: "Grain", skuCode: "SSR05", skuName: "SUREKHA( S) 5KG", mrp: "373" },
-{ account: "Emke", category: "Grain", skuCode: "SSR10", skuName: "SUREKHA( S) 10KG", mrp: "739" }
+{ account: "Emke", category: "Grain", skuCode: "SSR10", skuName: "SUREKHA( S) 10KG", mrp: "739" },
+{ account: "Account", category: "Category", skuCode: "Sku Code", skuName: "SKU name", mrp: "MRP" },
+{ account: "Elite", category: "Ingredients", skuCode: "fgvin01", skuName: "Double Horse Vinegar 1ltr", mrp: "49" },
+{ account: "Elite", category: "Ingredients", skuCode: "FGVIN05", skuName: "Double Horse Vinegar 500ml", mrp: "32" },
+{ account: "Elite", category: "Payasam", skuCode: "IPP20", skuName: "Instant Parippu Pradhaman 200 gm", mrp: "115" },
+{ account: "Elite", category: "Payasam", skuCode: "IPM20", skuName: "Instant Rice Palada Mix 200g", mrp: "85" },
+{ account: "Elite", category: "Payasam", skuCode: "PLD30", skuName: "PALADA PAYASAM MIX 300 g", mrp: "85" },
+{ account: "Elite", category: "Payasam", skuCode: "RMP30", skuName: "RICE PALADA PAYASAM  MIX 300 g", mrp: "85" },
+{ account: "Elite", category: "Payasam", skuCode: "SEM03O", skuName: "VERMICELLI KHEER MIX 300 g", mrp: "85" },
+{ account: "Elite", category: "Payasam", skuCode: "TCP18", skuName: "Tender Coconut Payasam Mix 180g", mrp: "112" },
+{ account: "Elite", category: "Flours", skuCode: "IIN02", skuName: "INSTANT IDIYAPPAM 200 g", mrp: "84" },
+{ account: "Elite", category: "Flours", skuCode: "UPM25", skuName: "Instant Uppuma 250g", mrp: "40" },
+{ account: "Elite", category: "Flours", skuCode: "UPMA80", skuName: "Gluten free instant rice upuma 80g", mrp: "69" },
+{ account: "Elite", category: "Pickles", skuCode: "CM400", skuName: " MANGO  PICKLE 400 g", mrp: "103" },
+{ account: "Elite", category: "Ingredients", skuCode: "CNF15", skuName: "CORN FLOUR 150g", mrp: "45" },
+{ account: "Elite", category: "Ingredients", skuCode: "CNF35", skuName: "Corn Flour 350g", mrp: "87" },
+{ account: "Elite", category: "Pickles", skuCode: "CM100", skuName: "Cut Mango  Pickle 100g", mrp: "28" },
+{ account: "Elite", category: "Pickles", skuCode: "CM900", skuName: "CUT MANGO 900GM", mrp: "168" },
+{ account: "Elite", category: "Pickles", skuCode: "CM500", skuName: "CUTMANGO PICKLE 500 g", mrp: "113" },
+{ account: "Elite", category: "Pickles", skuCode: "DA150", skuName: "DATES  PICKLE 150 g", mrp: "71" },
+{ account: "Elite", category: "Pickles", skuCode: "DA200", skuName: "DATES  PICKLE 200 g", mrp: "71" },
+{ account: "Elite", category: "Pickles", skuCode: "DA400", skuName: "DATES  PICKLE 400 g", mrp: "140" },
+{ account: "Elite", category: "Pickles", skuCode: "FP150", skuName: "FISH  PICKLE 150 g", mrp: "93" },
+{ account: "Elite", category: "Pickles", skuCode: "FP200", skuName: "FISH  PICKLE 200 g", mrp: "108" },
+{ account: "Elite", category: "Pickles", skuCode: "FP400", skuName: "FISH  PICKLE 400 g", mrp: "195" },
+{ account: "Elite", category: "Pickles", skuCode: "FP500", skuName: "FISH PICKLE 500 g", mrp: "215" },
+{ account: "Elite", category: "Masalas & Spices", skuCode: "GAPE2", skuName: "Garlic Paste 200g", mrp: "65" },
+{ account: "Elite", category: "Pickles", skuCode: "GA150", skuName: "GARLIC PICKLE 150g", mrp: "62" },
+{ account: "Elite", category: "Pickles", skuCode: "GA200", skuName: "GARLIC PICKLE 200g", mrp: "61" },
+{ account: "Elite", category: "Pickles", skuCode: "GA400", skuName: "GARLIC PICKLE 400g", mrp: "135" },
+{ account: "Elite", category: "Pickles", skuCode: "GA500", skuName: "GARLIC PICKLE 500 g", mrp: "140" },
+{ account: "Elite", category: "Pickles", skuCode: "GI150", skuName: "GINGER  PICKLE 150 g", mrp: "65" },
+{ account: "Elite", category: "Pickles", skuCode: "GI400", skuName: "GINGER  PICKLE 400 g", mrp: "141" },
+{ account: "Elite", category: "Ingredients", skuCode: "GNGRC15", skuName: "Ginger Coffee 150g", mrp: "93" },
+{ account: "Elite", category: "Masalas & Spices", skuCode: "GGPE2", skuName: "Ginger Garlic Paste 200g", mrp: "65" },
+{ account: "Elite", category: "Masalas & Spices", skuCode: "GIPE2", skuName: "Ginger Paste 200g", mrp: "65" },
+{ account: "Elite", category: "Pickles", skuCode: "HS400", skuName: "HOT &SWEET LIME DATES PICKLE 400g", mrp: "131" },
+{ account: "Elite", category: "Pickles", skuCode: "MM400", skuName: "KADUKU MANGO PICKLE 400g", mrp: "121" },
+{ account: "Elite", category: "Pickles", skuCode: "LM100", skuName: "Lime  Pickle 100g", mrp: "28" },
+{ account: "Elite", category: "Pickles", skuCode: "LM150", skuName: "LIME  PICKLE 150 g", mrp: "61" },
+{ account: "Elite", category: "Pickles", skuCode: "LM200", skuName: "LIME  PICKLE 200 g", mrp: "56" },
+{ account: "Elite", category: "Pickles", skuCode: "LM400", skuName: "LIME  PICKLE 400 g", mrp: "112" },
+{ account: "Elite", category: "Pickles", skuCode: "LM500", skuName: "LIME PICKLE 500 g", mrp: "113" },
+{ account: "Elite", category: "Pickles", skuCode: "LM900", skuName: "LIME PICKLE 900 g", mrp: "187" },
+{ account: "Elite", category: "Ingredients", skuCode: "MCR05", skuName: "MACRONI  200g", mrp: "34" },
+{ account: "Elite", category: "Ingredients", skuCode: "MCR04", skuName: "MACRONI  400g", mrp: "62" },
+{ account: "Elite", category: "Pickles", skuCode: "CM150", skuName: "MANGO  PICKLE 150 g", mrp: "56" },
+{ account: "Elite", category: "Pickles", skuCode: "CM200", skuName: "MANGO  PICKLE 200 g", mrp: "56" },
+{ account: "Elite", category: "Pickles", skuCode: "PR150", skuName: "PRAWN PICKLE 150 g", mrp: "103" },
+{ account: "Elite", category: "Pickles", skuCode: "PR200", skuName: "PRAWN PICKLE 200 g", mrp: "108" },
+{ account: "Elite", category: "Pickles", skuCode: "PR400", skuName: "PRAWN PICKLE 400 g", mrp: "225" },
+{ account: "Elite", category: "Pickles", skuCode: "PR500", skuName: "PRAWN PICKLE 500 g", mrp: "253" },
+{ account: "Elite", category: "Ingredients", skuCode: "SCY03", skuName: "SOYA CHUNKS 200g", mrp: "47" },
+{ account: "Elite", category: "Ingredients", skuCode: "SCYCN02", skuName: "SOYA CHUNKS NANO 200g", mrp: "49" },
+{ account: "Elite", category: "Pickles", skuCode: "TM150", skuName: "TENDER MANGO  PICKLE 150 g", mrp: "103" },
+{ account: "Elite", category: "Pickles", skuCode: "TM200", skuName: "TENDER MANGO  PICKLE 200 g", mrp: "103" },
+{ account: "Elite", category: "Pickles", skuCode: "TM400", skuName: "TENDER MANGO  PICKLE 400 g", mrp: "234" },
+{ account: "Elite", category: "Pickles", skuCode: "TM500", skuName: "TENDER MANGO PICKLE 500 g", mrp: "253" },
+{ account: "Elite", category: "Flours", skuCode: "IDM05", skuName: "1HR IDLI - DOSA MIX 500G", mrp: "85" },
+{ account: "Elite", category: "Flours", skuCode: "IP1KG", skuName: "6 Minute Idiyappam powder 1 k.g", mrp: "112" },
+{ account: "Elite", category: "Flours", skuCode: "IP500", skuName: "6 Minute Idiyappam powder 500GM", mrp: "59" },
+{ account: "Elite", category: "Flours", skuCode: "RPOW1", skuName: "APPAM IDIYAPPAM PATHIRI RICE FLOUR 1kg", mrp: "99" },
+{ account: "Elite", category: "Flours", skuCode: "RPOW5", skuName: "APPAM IDIYAPPAM PATHIRI RICE FLOUR 500g", mrp: "52" },
+{ account: "Elite", category: "Flours", skuCode: "RPOW5K", skuName: "Appam / Idiyappam Pathiri 5Kg", mrp: "475" },
+{ account: "Elite", category: "Ingredients", skuCode: "ASFTP05", skuName: "Asafoetida Powder 50g", mrp: "89" },
+{ account: "Elite", category: "Flours", skuCode: "ART05", skuName: "AVAL THICK RED  500g", mrp: "79" },
+{ account: "Elite", category: "Masalas & Spices", skuCode: "BMP10", skuName: "BIRYANI MASALA 100 g", mrp: "60" },
+{ account: "Elite", category: "Porridge", skuCode: "BRMB5", skuName: "BRAN RICH MATTA BROKEN RICE 500gm", mrp: "51" },
+{ account: "Elite", category: "Porridge", skuCode: "WBO05", skuName: "Broken Wheat 500g", mrp: "59" },
+{ account: "Elite", category: "Flours", skuCode: "CATA1", skuName: "CHAKKI FRESH ATTA 1 Kg", mrp: "79" },
+{ account: "Elite", category: "Flours", skuCode: "CPP01", skuName: "CHEMBA PUTTU PODI  1Kg", mrp: "135" },
+{ account: "Elite", category: "Flours", skuCode: "CPP05", skuName: "CHEMBA PUTTU PODI  500g", mrp: "69" },
+{ account: "Elite", category: "Masalas & Spices", skuCode: "CHM10", skuName: "CHICKEN MASALA 100 g", mrp: "55" },
+{ account: "Elite", category: "Masalas & Spices", skuCode: "CIP10", skuName: "Chilli Powder 100 g", mrp: "44" },
+{ account: "Elite", category: "Masalas & Spices", skuCode: "CHP25", skuName: "Chilli Powder 250 g", mrp: "109" },
+{ account: "Elite", category: "Masalas & Spices", skuCode: "CHP50", skuName: "Chilli Powder 500 g", mrp: "214" },
+{ account: "Elite", category: "Masalas & Spices", skuCode: "COP10", skuName: "CORIANDER POWDER 100 g", mrp: "33" },
+{ account: "Elite", category: "Masalas & Spices", skuCode: "COP01", skuName: "CORIANDER POWDER 1Kg", mrp: "312" },
+{ account: "Elite", category: "Masalas & Spices", skuCode: "COP25", skuName: "CORIANDER POWDER 250 g", mrp: "81" },
+{ account: "Elite", category: "Masalas & Spices", skuCode: "COP50", skuName: "CORIANDER POWDER 500 g", mrp: "159" },
+{ account: "Elite", category: "Flours", skuCode: "CPU05", skuName: "CORN PUTTU PODI  500g", mrp: "69" },
+{ account: "Elite", category: "Flours", skuCode: "RWRFR02", skuName: "DH Roasted Wt Rice Flour 500g", mrp: "52" },
+{ account: "Elite", category: "Flours", skuCode: "RWRFR01", skuName: "Roasted White Rice Flour 1kg", mrp: "99" },
+{ account: "Elite", category: "Flours", skuCode: "ESY05", skuName: "EASY PALAPPAM MIX  500 g", mrp: "59" },
+{ account: "Elite", category: "Flours", skuCode: "ESYP1", skuName: "EASY PALAPPAM MIX 1kg", mrp: "109" },
+{ account: "Elite", category: "Masalas & Spices", skuCode: "EGM10", skuName: "EGG  ROAST MASALA 100 g", mrp: "48" },
+{ account: "Elite", category: "Masalas & Spices", skuCode: "FHM10", skuName: "FISH MASALA 100 g", mrp: "55" },
+{ account: "Elite", category: "Masalas & Spices", skuCode: "GMA50", skuName: "GARAM MASALA 50 g", mrp: "55" },
+{ account: "Elite", category: "Ingredients", skuCode: "JP400", skuName: "JAGGERY POWDER 4000GM", mrp: "69" },
+{ account: "Elite", category: "Grain", skuCode: "MCB01", skuName: "JEERAKASALA RICE 1Kg", mrp: "275" },
+{ account: "Elite", category: "Grain", skuCode: "CMB01", skuName: "Cheff Mate 1kg", mrp: "249" },
+{ account: "Elite", category: "Masalas & Spices", skuCode: "KC100", skuName: "Kashmiri Chilli Powder 100g", mrp: "68" },
+{ account: "Elite", category: "Flours", skuCode: "LVER40", skuName: "LONG VERMICELLI 400g", mrp: "60" },
+{ account: "Elite", category: "Porridge", skuCode: "MBE01", skuName: "MATTA BROKEN RICE 1 kg", mrp: "119" },
+{ account: "Elite", category: "Porridge", skuCode: "MBEH5", skuName: "MATTA BROKEN RICE 500 g", mrp: "64" },
+{ account: "Elite", category: "Masalas & Spices", skuCode: "MTM10", skuName: "MEAT MASALA 100 g", mrp: "55" },
+{ account: "Elite", category: "Masalas & Spices", skuCode: "PPP10", skuName: "PEPPER POWDER 100 g", mrp: "165" },
+{ account: "Elite", category: "Masalas & Spices", skuCode: "PPW10", skuName: "PICKLE POWDER 100 g", mrp: "54" },
+{ account: "Elite", category: "Flours", skuCode: "RGPU5", skuName: "RAGI PUTTUPODI 500g", mrp: "73" },
+{ account: "Elite", category: "Masalas & Spices", skuCode: "RMM10", skuName: "RASAM POWDER 100 g", mrp: "58" },
+{ account: "Elite", category: "Flours", skuCode: "ARN05", skuName: "RED AVAL 500g", mrp: "79" },
+{ account: "Elite", category: "Flours", skuCode: "FGRAD02", skuName: "Ribbon Ada 200g", mrp: "54" },
+{ account: "Elite", category: "Flours", skuCode: "ADA2M", skuName: "RICE PALADA 200 g", mrp: "45" },
+{ account: "Elite", category: "Flours", skuCode: "ADA5M", skuName: "Rice Palada 500g", mrp: "99" },
+{ account: "Elite", category: "Flours", skuCode: "PTRI1", skuName: "ROASTED PATHIRI FLOUR  1kg", mrp: "109" },
+{ account: "Elite", category: "Flours", skuCode: "RGIP5", skuName: "ROASTED RAGI POWDER  500g", mrp: "72" },
+{ account: "Elite", category: "Flours", skuCode: "RAVA1", skuName: "ROASTED RAVA 1 kg", mrp: "110" },
+{ account: "Elite", category: "Flours", skuCode: "RAVA5", skuName: "ROASTED RAVA 500g", mrp: "59" },
+{ account: "Elite", category: "Flours", skuCode: "VER20", skuName: "ROASTED VERMICELLI 200 g", mrp: "29" },
+{ account: "Elite", category: "Flours", skuCode: "VER40", skuName: "ROASTED VERMICELLI 400 g", mrp: "59" },
+{ account: "Elite", category: "Porridge", skuCode: "SWBH5", skuName: "SAMBA BROKEN  WHEAT 500 g", mrp: "137" },
+{ account: "Elite", category: "Porridge", skuCode: "SWF05", skuName: "Samba Wheat Broken - Fine 500GM", mrp: "140" },
+{ account: "Elite", category: "Masalas & Spices", skuCode: "SMP10", skuName: "SAMBAR POWDER 100 g", mrp: "51" },
+{ account: "Elite", category: "Masalas & Spices", skuCode: "TUP10", skuName: "TURMERIC POWDER 100 g", mrp: "39" },
+{ account: "Elite", category: "Masalas & Spices", skuCode: "TUP25", skuName: "TURMERIC POWDER 250 g", mrp: "99" },
+{ account: "Elite", category: "Flours", skuCode: "UVR15", skuName: "Unroasted Vermicelli 150g", mrp: "29" },
+{ account: "Elite", category: "Masalas & Spices", skuCode: "VGM10", skuName: "VEGETABLE  MASALA 100 g", mrp: "47" },
+{ account: "Elite", category: "Flours", skuCode: "WPP05", skuName: "WHEAT PUTTU PODI  500 g", mrp: "75" },
+{ account: "Elite", category: "Porridge", skuCode: "WBF05", skuName: "Wheat Broken Fine 500g", mrp: "59" },
+{ account: "Elite", category: "Flours", skuCode: "AWN05", skuName: "WHITE  AVAL 500g", mrp: "73" },
+{ account: "Elite", category: "Flours", skuCode: "AWT04", skuName: "WHITE  AVAL Thick 400g", mrp: "59" },
+{ account: "Elite", category: "Flours", skuCode: "WPUT1", skuName: "WHITE PUTTU PODI 1 kg", mrp: "99" },
+{ account: "Elite", category: "Flours", skuCode: "WPU05", skuName: "WHITE PUTTU PODI 500 g", mrp: "55" },
+{ account: "Elite", category: "Flours", skuCode: "WPUT5", skuName: "White Puttu Podi 5kg", mrp: "475" },
+{ account: "Elite", category: "Masalas & Spices", skuCode: "CHP01", skuName: "Chilli Powder 1Kg", mrp: "423" },
+{ account: "Elite", category: "Ingredients", skuCode: "TMPE5", skuName: "Indian Tamarind 500g", mrp: "149" },
+{ account: "Elite", category: "Ingredients", skuCode: "TMPE2P", skuName: "Indian Tamarind 200g", mrp: "60" },
+{ account: "Elite", category: "Grain", skuCode: "CHS10", skuName: "CHERUMANI RICE 10KG", mrp: "690" },
+{ account: "Elite", category: "Grain", skuCode: "CHS05", skuName: "CHERUMANI RICE 5KG", mrp: "348" },
+{ account: "Elite", category: "Grain", skuCode: "JYA10", skuName: "JAYA RICE 10KG", mrp: "719" },
+{ account: "Elite", category: "Grain", skuCode: "JYA05", skuName: "JAYA RICE 5KG", mrp: "363" },
+{ account: "Elite", category: "Grain", skuCode: "JYP10", skuName: "JYOTHI VADI MATTA RICE 10KG", mrp: "750" },
+{ account: "Elite", category: "Grain", skuCode: "JYP05", skuName: "JYOTHI VADI MATTA RICE 5KG", mrp: "374" },
+{ account: "Elite", category: "Grain", skuCode: "PRS10", skuName: "PONNI RICE 10KG", mrp: "935" },
+{ account: "Elite", category: "Grain", skuCode: "PRS05", skuName: "PONNI RICE 5KG", mrp: "471" },
+{ account: "Elite", category: "Grain", skuCode: "SMR10", skuName: "SINGLE MATTA RICE 10KG", mrp: "689" },
+{ account: "Elite", category: "Grain", skuCode: "SMR05", skuName: "SINGLE MATTA RICE 5KG", mrp: "348" },
+{ account: "Elite", category: "Grain", skuCode: "SSR10", skuName: "SUREKHA RICE 10KG", mrp: "739" },
+{ account: "Elite", category: "Grain", skuCode: "SSR05", skuName: "SUREKHA RICE 5KG", mrp: "373" },
+{ account: "Elite", category: "Grain", skuCode: "RMP10", skuName: "UNDA MATTA RICE 10KG", mrp: "768" },
+{ account: "Elite", category: "Grain", skuCode: "RMP05", skuName: "UNDA MATTA RICE 5KG", mrp: "387" }
+
 
 ];
 
+// paste promoMaster here
+
+const promoMaster = [
+  { account: "Lulu", skuCode: "233958", skuName: "D/Horse White Rice Flour 5kg", mrp: 475, discount: 65, promoPrice: 410 },
+  { account: "Lulu", skuCode: "233973", skuName: "D/Horse White Puttu Podi 5kg", mrp: 475, discount: 75, promoPrice: 400 },
+  { account: "Lulu", skuCode: "3863", skuName: "D/Horse Roasted Rava 1kg", mrp: 110, discount: 15, promoPrice: 95 },
+  { account: "Lulu", skuCode: "376847", skuName: "D/H Idiyappam Pwdr NormWater 1kg", mrp: 112, discount: 15, promoPrice: 97 },
+  { account: "Lulu", skuCode: "3835", skuName: "D/Horse White Puttu Podi 1kg", mrp: 99, discount: 12, promoPrice: 87 },
+  { account: "Lulu", skuCode: "3838", skuName: "D/Horse White Rice Powder Appam 1kg", mrp: 99, discount: 12, promoPrice: 87 },
+  { account: "Lulu", skuCode: "3731", skuName: "D/Horse Chicken Masala 100g", mrp: 55, discount: 10, promoPrice: 45 },
+  { account: "Lulu", skuCode: "3742", skuName: "D/Horse Sambar Powder 100g", mrp: 51, discount: 10, promoPrice: 41 },
+  { account: "Lulu", skuCode: "3736", skuName: "D/Horse Meat Masala 100g", mrp: 55, discount: 10, promoPrice: 45 },
+  { account: "Lulu", skuCode: "1038144", skuName: "D/H Jaggery Powder 400gm", mrp: 69, discount: 10, promoPrice: 59 },
+  { account: "Lulu", skuCode: "1038143", skuName: "D/H Instant Rice Palada Mix 200g", mrp: 85, discount: 13.6, promoPrice: 71.4 },
+  { account: "Lulu", skuCode: "3780", skuName: "D/Horse Palada Payasam Mix 300g", mrp: 85, discount: 13.6, promoPrice: 71.4 },
+  { account: "Lulu", skuCode: "3777", skuName: "D/H Rice Palada Payasam Mix 300g", mrp: 85, discount: 13.6, promoPrice: 71.4 },
+  { account: "Lulu", skuCode: "3781", skuName: "D/Horse Semiya Pasyasam 300g", mrp: 85, discount: 13.6, promoPrice: 71.4 },
+  { account: "Lulu", skuCode: "1308518", skuName: "D/H Instnt Parip Prdhmn 200g", mrp: 115, discount: 18.4, promoPrice: 96.6 },
+  { account: "Lulu", skuCode: "2376064", skuName: "Tender Coconut Payasam Mix 180g", mrp: 112, discount: 17.9, promoPrice: 94.1 }
+];
 
 // ===== STATE =====
 const selectedProductsByCategory = {};
 const shelfReportData = [];
+const promoData = {};
 
-// ===== ELEMENTS =====
-const accountSelect = document.getElementById("account");
-const outletSelect = document.getElementById("outlet");
-const categorySelect = document.getElementById("category");
-const shelfCategory = document.getElementById("shelfCategory");
-const shelfTableBody = document.getElementById("shelfTableBody");
-
-document.getElementById("dateTime").value = new Date().toLocaleString();
+dateTime.value = new Date().toLocaleString();
 
 // ===== LOCATION =====
 function captureLocation(){
-navigator.geolocation.getCurrentPosition(
-(pos)=>{ gps.value = pos.coords.latitude.toFixed(5)+","+pos.coords.longitude.toFixed(5); },
-()=>{ alert("Please allow location access"); }
-);
+navigator.geolocation.getCurrentPosition(p=>{
+gps.value = p.coords.latitude+","+p.coords.longitude;
+});
 }
 
-// ===== ACCOUNT LOAD =====
-accountSelect.innerHTML = `<option value="">Select Account</option>`;
+// ===== ACCOUNT =====
+account.innerHTML = `<option>Select Account</option>`;
 [...new Set(outlets.map(x=>x.account))].forEach(a=>{
-accountSelect.innerHTML += `<option value="${a}">${a}</option>`;
+account.innerHTML+=`<option>${a}</option>`;
 });
 
-accountSelect.onchange = () => {
+account.onchange=()=>{
+const acc=account.value;
 
-const acc = accountSelect.value;
-
-outletSelect.innerHTML = `<option value="">Select Outlet</option>`;
+outlet.innerHTML='';
 outlets.filter(x=>x.account===acc).forEach(x=>{
-outletSelect.innerHTML += `<option value="${x.name}">${x.name}</option>`;
+outlet.innerHTML+=`<option>${x.name}</option>`;
 });
 
-categorySelect.innerHTML = "";
-shelfCategory.innerHTML = "";
+category.innerHTML='';
+shelfCategory.innerHTML='';
 
 [...new Set(skuMaster.filter(x=>x.account===acc).map(x=>x.category))]
 .forEach(c=>{
-categorySelect.innerHTML += `<option value="${c}">${c}</option>`;
-shelfCategory.innerHTML += `<option value="${c}">${c}</option>`;
+category.innerHTML+=`<option>${c}</option>`;
+shelfCategory.innerHTML+=`<option>${c}</option>`;
 });
 
 loadProducts();
+loadPromo();
 };
-
-categorySelect.onchange = loadProducts;
 
 // ===== PRODUCTS =====
 function loadProducts(){
-const list = skuMaster.filter(x=>x.account===accountSelect.value && x.category===categorySelect.value);
+const list=skuMaster.filter(x=>x.account===account.value && x.category===category.value);
+productList.innerHTML='';
 
-productList.innerHTML="";
-
-list.forEach(item=>{
-const checked = (selectedProductsByCategory[categorySelect.value]||[]).includes(item.skuName);
-
-productList.innerHTML += `
-<label class="flex items-center gap-2 bg-gray-50 p-2 rounded">
-<input type="checkbox" value="${item.skuName}" ${checked?"checked":""}
-onchange="updateSelection()">
-<span>${item.skuName}</span>
+list.forEach(p=>{
+const checked=(selectedProductsByCategory[category.value]||[]).includes(p.skuName);
+productList.innerHTML+=`
+<label class="flex items-center gap-2 bg-gray-50 p-2 rounded mb-1">
+<input type="checkbox" value="${p.skuName}" ${checked?"checked":""}
+onchange="updateSel()">
+<span class="text-sm">${p.skuName}</span>
 </label>`;
 });
 
 calcAvailability();
 }
 
-function updateSelection(){
-selectedProductsByCategory[categorySelect.value] =
-[...document.querySelectorAll("#productList input:checked")].map(x=>x.value);
+category.onchange=loadProducts;
 
+function updateSel(){
+selectedProductsByCategory[category.value]=
+[...document.querySelectorAll("#productList input:checked")].map(x=>x.value);
 calcAvailability();
+updateRating();
 }
 
 function calcAvailability(){
-const total = document.querySelectorAll("#productList input").length;
-const sel = document.querySelectorAll("#productList input:checked").length;
-availabilityPct.innerText = total?((sel/total)*100).toFixed(1):0;
+const t=document.querySelectorAll("#productList input").length;
+const s=document.querySelectorAll("#productList input:checked").length;
+availabilityPct.innerText=t?((s/t)*100).toFixed(1):0;
 }
 
-// ===== SHELF =====
+// ===== SOS =====
 function addShelf(){
-const cat = shelfCategory.value;
-const total = +totalFacings.value||0;
-const ours = +ourFacings.value||0;
 
-if(!cat || total<=0){
+const total = Number(totalFacings.value);
+const ours = Number(ourFacings.value);
+const cat = shelfCategory.value;
+const eye = eyeLevel.value || "";
+const addVis = Number(additionalVisibility.value) || 0;
+
+if(!cat || !total){
 alert("Enter valid data");
 return;
 }
@@ -1174,148 +1330,325 @@ const pct = ((ours/total)*100).toFixed(1);
 
 const idx = shelfReportData.findIndex(x=>x.category===cat);
 
-const row = {category:cat,totalFacings:total,ourFacings:ours,sharePct:pct};
+const row = {
+category: cat,
+totalFacings: total,
+ourFacings: ours,
+sharePct: pct,
+eyeLevel: eye,
+additionalVisibility: addVis
+};
 
-if(idx>=0) shelfReportData[idx]=row;
+if(idx>=0) shelfReportData[idx] = row;
 else shelfReportData.push(row);
 
 renderShelf();
+updateRating();
 
-totalFacings.value="";
-ourFacings.value="";
-shelfCategory.selectedIndex=0;
+// 🔁 reset all SOS inputs
+totalFacings.value = "";
+ourFacings.value = "";
+shelfCategory.selectedIndex = 0;
+eyeLevel.selectedIndex = 0;
+additionalVisibility.value = "";
 }
-
 function renderShelf(){
-shelfTableBody.innerHTML="";
+shelfTableBody.innerHTML='';
 shelfReportData.forEach(r=>{
-const tr=document.createElement("tr");
-tr.innerHTML=`
-<td class="border p-2">${r.category}</td>
-<td class="border p-2">${r.totalFacings}</td>
-<td class="border p-2">${r.ourFacings}</td>
-<td class="border p-2">${r.sharePct}%</td>`;
-shelfTableBody.appendChild(tr);
+shelfTableBody.innerHTML+=`
+<tr>
+<td class="border p-1">${r.category}</td>
+<td class="border p-1">${r.totalFacings}</td>
+<td class="border p-1">${r.ourFacings}</td>
+<td class="border p-1">${r.sharePct}%</td>
+<td class="border p-1">${r.eyeLevel || ""}</td>
+<td class="border p-1">${r.additionalVisibility || ""}</td>
+</tr>`;
 });
 }
+// ===== PROMO =====
+function loadPromo(){
+
+const promos=promoMaster.filter(x=>x.account===account.value);
+
+if(!promos.length){
+promoSection.style.display="none";
+return;
+}
+
+promoSection.style.display="block";
+promoList.innerHTML='';
+
+promos.forEach(p=>{
+
+const saved=promoData[p.skuCode]||{};
+let status="-",color="black";
+
+if(saved.price){
+if(saved.price<=p.promoPrice){status="Running";color="green";}
+else{status="Not Running";color="red";}
+}
+
+promoList.innerHTML+=`
+<div class="bg-gray-50 border p-3 rounded">
+<div class="font-medium">${p.skuName}</div>
+
+<div class="grid grid-cols-2 gap-2 mt-2">
+<input type="number" inputmode="numeric" placeholder="Selling Price"
+value="${saved.price||""}"
+oninput="updatePromo('${p.skuCode}',this.value)"
+class="border p-2 rounded">
+
+<select onchange="updateTalker('${p.skuCode}',this.value)"
+class="border p-2 rounded">
+<option value="">Talker</option>
+<option ${saved.talker==="Yes"?"selected":""}>Yes</option>
+<option ${saved.talker==="No"?"selected":""}>No</option>
+</select>
+</div>
+
+<div class="text-xs mt-2">MRP ₹${p.mrp} | Discount ₹${p.discount}</div>
+<div class="text-sm mt-1">Status:
+<span id="s-${p.skuCode}" style="color:${color};font-weight:600">${status}</span>
+</div>
+</div>`;
+});
+
+updatePromoSummary();
+}
+
+function updatePromo(code,val){
+if(!promoData[code]) promoData[code]={};
+
+const price=Number(val);
+promoData[code].price=price;
+
+const p=promoMaster.find(x=>x.skuCode===code);
+const el=document.getElementById("s-"+code);
+
+if(!price){el.innerText="-";el.style.color="black";return;}
+
+if(price<=p.promoPrice){
+el.innerText="Running";el.style.color="green";
+}else{
+el.innerText="Not Running";el.style.color="red";
+}
+
+updatePromoSummary();
+}
+
+function updateTalker(code,val){
+if(!promoData[code]) promoData[code]={};
+promoData[code].talker=val;
+}
+
+function updatePromoSummary(){
+const promos=promoMaster.filter(x=>x.account===account.value);
+
+let ok=0;
+promos.forEach(p=>{
+const d=promoData[p.skuCode];
+if(d && d.price<=p.promoPrice) ok++;
+});
+
+promoPct.innerText=promos.length?((ok/promos.length)*100).toFixed(1):0;
+}
+
+// ===== RATING =====
+function updateRating(){
+let a=0,c=0;
+
+Object.keys(selectedProductsByCategory).forEach(cat=>{
+const all=skuMaster.filter(x=>x.account===account.value && x.category===cat);
+const sel=selectedProductsByCategory[cat]||[];
+if(all.length){a+=(sel.length/all.length)*100;c++;}
+});
+
+const avgA=c?a/c:0;
+
+let s=0;
+shelfReportData.forEach(x=>s+=parseFloat(x.sharePct));
+const avgS=shelfReportData.length?s/shelfReportData.length:0;
+
+rating.innerText=((avgA/100)*4+(avgS/100)*4+2).toFixed(1);
+}
+
+// ===== FILE NAME =====
+function getFileName(){
+const d=new Date().toISOString().split('T')[0];
+return `${account.value} - ${outlet.value} - ${intern.value} - ${d}.xlsx`;
+}
+
+// ===== EXCEL =====
+function createWorkbook(){
+
+const wb=XLSX.utils.book_new();
+
+// SUMMARY
+XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet([{
+Account:account.value,Outlet:outlet.value,Intern:intern.value,
+Date:dateTime.value,GPS:gps.value,Rating:rating.innerText
+}]),"Summary");
+
+// AVAILABILITY
+const avail=[];
+Object.keys(selectedProductsByCategory).forEach(cat=>{
+const all=skuMaster.filter(x=>x.account===account.value && x.category===cat);
+const sel=selectedProductsByCategory[cat]||[];
+avail.push({
+Category:cat,
+Available:sel.join(", "),
+AvailabilityPercent:all.length?((sel.length/all.length)*100).toFixed(1):0
+});
+});
+XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(avail),"Availability");
+
+// NOT AVAILABLE
+// ===== NOT AVAILABLE (UPDATED FORMAT)
+const na=[];
+Object.keys(selectedProductsByCategory).forEach(cat=>{
+const all=skuMaster.filter(x=>x.account===account.value && x.category===cat);
+const sel=selectedProductsByCategory[cat]||[];
+
+all.forEach(s=>{
+if(!sel.includes(s.skuName)){
+na.push({
+Account: account.value,
+StoreName: outlet.value,
+Date: dateTime.value,
+Category: cat,
+SKUCode: s.skuCode,
+SKUName: s.skuName
+});
+}
+});
+});
+
+XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(na),"Not Available SKUs");
+
+// SOS
+const sosRows = shelfReportData.map(r=>({
+Account: account.value,
+StoreName: outlet.value,
+Date: dateTime.value,
+Category: r.category,
+TotalFacings: r.totalFacings,
+OurFacings: r.ourFacings,
+SharePercent: r.sharePct,
+EyeLevel: r.eyeLevel || "",
+AdditionalVisibilities: r.additionalVisibility || 0
+}));
+
+XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(sosRows), "SOS Check");
+
+// PROMO
+// ===== PROMO CHECK (UPDATED FORMAT)
+const promoRows=[];
+
+promoMaster
+.filter(x=>x.account===account.value)
+.forEach(p=>{
+
+const d=promoData[p.skuCode]||{};
+const sell=Number(d.price)||0;
+const expected=p.promoPrice;
+
+// category mapping
+const catObj = skuMaster.find(x=>x.skuCode===p.skuCode);
+const category = catObj ? catObj.category : "";
+
+let contribution=0;
+let contributionPct=0;
+
+if(sell && sell<expected){
+contribution = expected - sell;
+contributionPct = ((contribution / p.mrp) * 100).toFixed(2);
+}
+
+promoRows.push({
+Account: account.value,
+StoreName: outlet.value,
+Date: dateTime.value,
+Category: category,
+SKUCode: p.skuCode,
+SKUName: p.skuName,
+MRP: p.mrp,
+PromoDiscount: p.discount,
+SellingPrice: sell || "",
+PromoStatus: sell ? (sell<=expected ? "Running" : "Not Running") : "",
+Contribution: contribution,
+ContributionPercent: contributionPct,
+Talker: d.talker || ""
+});
+
+});
+
+XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(promoRows),"Promo Check");
+
+return wb;
+}
+
+// ===== BUTTONS =====
+function downloadExcel(){ XLSX.writeFile(createWorkbook(), getFileName()); }
+function shareExcel(){ downloadExcel(); alert("Downloaded. Share manually."); }
 
 // ===== DRAFT =====
 function saveDraft(){
 localStorage.setItem("draft", JSON.stringify({
-intern:intern.value,
-account:accountSelect.value,
-outlet:outletSelect.value,
+intern: intern.value,
+account: account.value,
+outlet: outlet.value,
+category: category.value,
 selectedProductsByCategory,
-shelfReportData
+shelfReportData,
+promoData
 }));
 alert("Saved");
 }
 
-window.onload = ()=>{
-const d = JSON.parse(localStorage.getItem("draft")||"null");
-if(!d) return;
+function restoreDraft(){
 
-intern.value = d.intern || "";
-accountSelect.value = d.account;
-accountSelect.onchange();
+const data = JSON.parse(localStorage.getItem("draft"));
+if(!data) return;
 
+// restore dropdowns first
+intern.value = data.intern || "";
+account.value = data.account || "";
+
+// trigger account load (this populates outlet/category)
+account.onchange();
+
+// delay ensures dropdowns are ready
 setTimeout(()=>{
-outletSelect.value = d.outlet;
-Object.assign(selectedProductsByCategory,d.selectedProductsByCategory||{});
-shelfReportData.push(...(d.shelfReportData||[]));
+
+outlet.value = data.outlet || "";
+category.value = data.category || "";
+
+// restore data
+Object.assign(selectedProductsByCategory, data.selectedProductsByCategory || {});
+
+shelfReportData.length = 0;
+(data.shelfReportData || []).forEach(x => shelfReportData.push(x));
+
+Object.assign(promoData, data.promoData || {});
+
+// re-render
 renderShelf();
 loadProducts();
-},100);
-};
+loadPromo();
+updateRating();
+
+}, 100);
+}
 
 function clearDraft(){
 localStorage.removeItem("draft");
 location.reload();
 }
 
-// ===== EXCEL =====
-function buildSummary(){
-return [{
-Account:accountSelect.value,
-Outlet:outletSelect.value,
-Intern:intern.value,
-GPS:gps.value,
-DateTime:dateTime.value
-}];
-}
-
-function buildAvailability(){
-const rows=[];
-Object.keys(selectedProductsByCategory).forEach(cat=>{
-const all = skuMaster.filter(x=>x.account===accountSelect.value && x.category===cat);
-const sel = selectedProductsByCategory[cat]||[];
-
-rows.push({
-Account:accountSelect.value,
-Outlet:outletSelect.value,
-Category:cat,
-Available:sel.join(", "),
-AvailabilityPercent:all.length?((sel.length/all.length)*100).toFixed(1):0
-});
-});
-return rows;
-}
-
-function buildNotAvailable(){
-const rows=[];
-
-Object.keys(selectedProductsByCategory).forEach(cat=>{
-const all = skuMaster.filter(x=>x.account===accountSelect.value && x.category===cat);
-const sel = selectedProductsByCategory[cat]||[];
-
-all.forEach(sku=>{
-if(!sel.includes(sku.skuName)){
-rows.push({
-Account:accountSelect.value,
-Outlet:outletSelect.value,
-SKUCode:sku.skuCode,
-SKUName:sku.skuName
-});
-}
-});
-});
-
-return rows;
-}
-
-function buildSOS(){
-return shelfReportData.map(r=>({
-Account:accountSelect.value,
-Outlet:outletSelect.value,
-Category:r.category,
-Total:r.totalFacings,
-Our:r.ourFacings,
-Share:r.sharePct
-}));
-}
-
-function createWorkbook(){
-const wb = XLSX.utils.book_new();
-
-XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(buildSummary()),"Summary");
-XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(buildAvailability()),"Availability");
-XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(buildSOS()),"SOS Check");
-XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(buildNotAvailable()),"Not Available SKUs");
-
-return wb;
-}
-
-function downloadExcel(){
-  XLSX.writeFile(
-    createWorkbook(),
-    `${accountSelect.value} - ${outletSelect.value} - ${intern.value} - ${new Date().toISOString().split('T')[0]}.xlsx`
-  );
-}
-
-async function shareExcel(){
-downloadExcel();
-alert("File downloaded. Please share manually.");
-}
+window.onload = function(){
+restoreDraft();
+};
 
 </script>
 
