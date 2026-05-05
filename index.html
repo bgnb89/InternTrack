@@ -71,7 +71,10 @@ placeholder="No of additional visibilities">
 </div>
 
 <!-- RATING -->
-<div class="text-center font-bold text-xl">Rating: <span id="rating">0</span>/10</div>
+<div class="text-lg font-semibold mt-2">
+Store Rating: <span id="rating">0</span> / 10
+<span id="ratingLabel" class="ml-2 font-bold"></span>
+</div>
 
 </div>
 
@@ -1454,8 +1457,65 @@ if(d && d.price<=p.promoPrice) ok++;
 promoPct.innerText=promos.length?((ok/promos.length)*100).toFixed(1):0;
 }
 
+function getPromoTalkerScore(){
+
+const promos = promoMaster.filter(x=>x.account===account.value);
+if(!promos.length) return 2;
+
+let score = 0;
+
+promos.forEach(p=>{
+const d = promoData[p.skuCode];
+
+if(d && d.price && d.price <= p.promoPrice){
+score += 1; // promo running
+
+if(d.talker === "Yes") score += 1; // talker present
+}
+});
+
+// max possible = 2 * promos.length
+const pct = promos.length ? (score / (promos.length * 2)) : 0;
+
+return pct * 2; // out of 2
+}
+
+function getEyeLevelScore(){
+
+if(!shelfReportData.length) return 0;
+
+let count = 0;
+
+shelfReportData.forEach(r=>{
+if(r.eyeLevel === "Yes") count++;
+});
+
+const pct = count / shelfReportData.length;
+
+return pct * 2; // out of 2
+}
+
+function getVisibilityScore(){
+
+if(!shelfReportData.length) return 0;
+
+let total = 0;
+
+shelfReportData.forEach(r=>{
+total += Number(r.additionalVisibility) || 0;
+});
+
+// define max benchmark (tunable)
+const MAX_VISIBILITY = 10;
+
+const pct = Math.min(total / MAX_VISIBILITY, 1);
+
+return pct * 1; // out of 1
+}
+
 // ===== RATING =====
 function updateRating(){
+
 let a=0,c=0;
 
 Object.keys(selectedProductsByCategory).forEach(cat=>{
@@ -1470,7 +1530,48 @@ let s=0;
 shelfReportData.forEach(x=>s+=parseFloat(x.sharePct));
 const avgS=shelfReportData.length?s/shelfReportData.length:0;
 
-rating.innerText=((avgA/100)*4+(avgS/100)*4+2).toFixed(1);
+// ===== NEW WEIGHTED LOGIC =====
+const availabilityScore = (avgA/100) * 2.5;
+const sosScore = (avgS/100) * 2.5;
+const promoScore = getPromoTalkerScore();
+const eyeScore = getEyeLevelScore();
+const visScore = getVisibilityScore();
+
+let final = availabilityScore + sosScore + promoScore + eyeScore + visScore;
+
+// cap
+final = Math.min(final, 10);
+
+rating.innerText = final.toFixed(1);
+
+// ===== LABEL =====
+updateRatingLabel(final);
+}
+
+function updateRatingLabel(score){
+
+let label = "";
+let color = "";
+
+if(score >= 9){
+label = "Excellent";
+color = "green";
+}
+else if(score >= 7){
+label = "Good";
+color = "blue";
+}
+else if(score >= 4){
+label = "Average";
+color = "orange";
+}
+else{
+label = "Poor";
+color = "red";
+}
+
+ratingLabel.innerText = label;
+ratingLabel.style.color = color;
 }
 
 // ===== FILE NAME =====
