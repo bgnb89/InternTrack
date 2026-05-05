@@ -1438,11 +1438,13 @@ el.innerText="Not Running";el.style.color="red";
 }
 
 updatePromoSummary();
+  updateRating();
 }
 
 function updateTalker(code,val){
 if(!promoData[code]) promoData[code]={};
 promoData[code].talker=val;
+  updateRating();
 }
 
 function updatePromoSummary(){
