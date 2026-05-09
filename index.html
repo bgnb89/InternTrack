@@ -19,6 +19,9 @@
 <option value="">Select Intern</option>
 <option>Sanjay</option><option>Ajay</option><option>Akshay</option>
 <option>Abhiram</option><option>Hiba</option><option>Krishnendu</option><option>Megha</option><option>Prabhath</option>
+<option>Doniya</option>
+  <option>Sidharth</option>
+  <option>Sneha</option>
 </select>
 
 <input id="dateTime" class="border p-2 w-full bg-gray-100 rounded" readonly>
@@ -71,7 +74,10 @@ placeholder="No of additional visibilities">
 </div>
 
 <!-- RATING -->
-<div class="text-center font-bold text-xl">Rating: <span id="rating">0</span>/10</div>
+<div class="text-lg font-semibold mt-2">
+Store Rating: <span id="rating">0</span> / 10
+<span id="ratingLabel" class="ml-2 font-bold"></span>
+</div>
 
 </div>
 
@@ -91,15 +97,27 @@ const outlets = [
   { account: "Lulu", name: "Forum Mall", city: "Cochin" },
   { account: "Lulu", name: "Thriprayar", city: "Thrissur" },
   { account: "Lulu", name: "Thrissur", city: "Thrissur" },
+   { account: "Lulu", name: "Calicut", city: "Calicut" },
+   { account: "Lulu", name: "Kottiyam", city: "Kollam" },
 
   { account: "Bismi", name: "Kalamassery", city: "Cochin" },
   { account: "Bismi", name: "Vytila", city: "Cochin" },
   { account: "Bismi", name: "Kaloor", city: "Cochin" },
   { account: "Bismi", name: "Alappuzha", city: "Alappuzha" },
+  { account: "Bismi", name: "Thrissur", city: "Thrissur" },
 
   { account: "Pothys", name: "Kaloor", city: "Cochin" },
 
   { account: "Nesto", name: "Thrissur", city: "Thrissur" },
+   { account: "Nesto", name: "Gokulam Mall", city: "Calicut" },
+   { account: "Nesto", name: "Hilite", city: "Calicut" },
+  { account: "Nesto", name: "Blue Diamond", city: "Calicut" },
+
+   { account: "Police Canteen", name: "Thrissur", city: "Thrissur" },
+   { account: "Police Canteen", name: "Kollam", city: "Kollam" },
+   { account: "Police Canteen", name: "Tripunithura", city: "Cochin" },
+   { account: "Police Canteen", name: "Calicut", city: "Calicut" },
+  
 
   { account: "Reliance", name: "East Fort", city: "Thrissur" },
   { account: "Reliance", name: "West Fort", city: "Thrissur" },
@@ -115,8 +133,13 @@ const outlets = [
   { account: "Reliance", name: "Irumbanam", city: "Cochin" },
   { account: "Reliance", name: "Vallathol Jn, Kakkanad", city: "Cochin" },
   { account: "Reliance", name: "Unichira", city: "Cochin" },
+    { account: "Reliance", name: "Karaparamb", city: "Calicut" },
+    { account: "Reliance", name: "City Park", city: "Calicut" },
+    { account: "Reliance", name: "Madan Nada", city: "Kollam" },
+    { account: "Reliance", name: "Karunagappally", city: "Kollam" },
 
   { account: "Kalyan", name: "North Bus Stand", city: "Thrissur" },
+  { account: "Kalyan", name: "Kollam", city: "Kollam" },
  { account: "Elite", name: "North Bus Stand", city: "Thrissur" },
  { account: "Elite", name: "Poonkunnam", city: "Thrissur" },
  { account: "Elite", name: "Ayyanthol", city: "Thrissur" },
@@ -284,6 +307,153 @@ const skuMaster = [
   { account: "Lulu", category: "Grain", skuCode: "SMR10", skuName: "D/Horse Single Matta Rice 10kg", mrp: "689" },
   { account: "Lulu", category: "Grain", skuCode: "SSR05", skuName: "D/Horse Surekha Rice 5kg", mrp: "373" },
   { account: "Lulu", category: "Grain", skuCode: "SSR10", skuName: "D/Horse Surekha Rice 10kg", mrp: "739" },
+
+
+{ account: "Police Canteen", category: "Ingredients", skuCode: "fgvin01", skuName: "Double Horse Vinegar 1ltr", mrp: "49" },
+{ account: "Police Canteen", category: "Ingredients", skuCode: "FGVIN05", skuName: "Double Horse Vinegar 500ml", mrp: "32" },
+{ account: "Police Canteen", category: "Flours", skuCode: "IIN02", skuName: "Instant Idiyappam 200g (New)", mrp: "84" },
+{ account: "Police Canteen", category: "Flours", skuCode: "IIN10", skuName: "Instant Idiyappam 1Kg (New)", mrp: "357" },
+{ account: "Police Canteen", category: "Payasam", skuCode: "IPM20", skuName: "Instant Sadya Palada Mix 200g", mrp: "89" },
+{ account: "Police Canteen", category: "Payasam", skuCode: "IPP20", skuName: "Instant Parippu Pradhaman 200g", mrp: "115" },
+{ account: "Police Canteen", category: "Payasam", skuCode: "PLD30", skuName: "Palada Payasam Mix 300g (New)", mrp: "89" },
+{ account: "Police Canteen", category: "Payasam", skuCode: "RMP30", skuName: "Rice Palada Payasam  Mix 300g", mrp: "85" },
+{ account: "Police Canteen", category: "Payasam", skuCode: "TCP18", skuName: "Tender Coconut Payasam Mix 180g", mrp: "112" },
+{ account: "Police Canteen", category: "Flours", skuCode: "RSE02", skuName: "Rice sevai 200g NEW", mrp: "62" },
+{ account: "Police Canteen", category: "Payasam", skuCode: "SEM03O", skuName: "Vermicelli Kheer Mix 300g", mrp: "89" },
+{ account: "Police Canteen", category: "Pickles", skuCode: "CM100", skuName: "Cut Mango  Pickle 100g", mrp: "28" },
+{ account: "Police Canteen", category: "Pickles", skuCode: "CM150", skuName: "Cut Mango  Pickle 150g", mrp: "56" },
+{ account: "Police Canteen", category: "Pickles", skuCode: "CM200", skuName: "Cut Mango  Pickle 200g", mrp: "56" },
+{ account: "Police Canteen", category: "Pickles", skuCode: "CM400", skuName: "Cut Mango  Pickle 400g", mrp: "103" },
+{ account: "Police Canteen", category: "Pickles", skuCode: "CM500", skuName: "Cut Mango Pickle 500g", mrp: "113" },
+{ account: "Police Canteen", category: "Pickles", skuCode: "CM900", skuName: "Cut Mango Pickle 900g", mrp: "168" },
+{ account: "Police Canteen", category: "Ingredients", skuCode: "CNF15", skuName: "Corn Flour 150g", mrp: "45" },
+{ account: "Police Canteen", category: "Ingredients", skuCode: "CNF35", skuName: "Corn Flour 350g", mrp: "89" },
+{ account: "Police Canteen", category: "Pickles", skuCode: "DA150", skuName: "Dates  Pickle 150g", mrp: "71" },
+{ account: "Police Canteen", category: "Pickles", skuCode: "DA200", skuName: "Dates  Pickle 200g", mrp: "71" },
+{ account: "Police Canteen", category: "Pickles", skuCode: "DA400", skuName: "Dates  Pickle 400g", mrp: "140" },
+{ account: "Police Canteen", category: "Pickles", skuCode: "FP150", skuName: "Fish  Pickle 150g", mrp: "95" },
+{ account: "Police Canteen", category: "Pickles", skuCode: "FP200", skuName: "Fish  Pickle 200g", mrp: "108" },
+{ account: "Police Canteen", category: "Pickles", skuCode: "FP400", skuName: "Fish  Pickle 400g", mrp: "195" },
+{ account: "Police Canteen", category: "Pickles", skuCode: "FP500", skuName: "Fish Pickle 500g", mrp: "215" },
+{ account: "Police Canteen", category: "Pickles", skuCode: "GA150", skuName: "Garlic Pickle 150g", mrp: "62" },
+{ account: "Police Canteen", category: "Pickles", skuCode: "GA200", skuName: "Garlic Pickle 200g", mrp: "61" },
+{ account: "Police Canteen", category: "Pickles", skuCode: "GA400", skuName: "Garlic Pickle 400g", mrp: "135" },
+{ account: "Police Canteen", category: "Pickles", skuCode: "GA500", skuName: "Garlic Pickle 500g", mrp: "140" },
+{ account: "Police Canteen", category: "Masalas & Spices", skuCode: "GAPE2", skuName: "GARLIC PASTE 200G", mrp: "65" },
+{ account: "Police Canteen", category: "Masalas & Spices", skuCode: "GGPE2", skuName: "GINGER GARLIC PASTE 200G", mrp: "65" },
+{ account: "Police Canteen", category: "Pickles", skuCode: "GI150", skuName: "Ginger  Pickle 150g", mrp: "65" },
+{ account: "Police Canteen", category: "Pickles", skuCode: "GI400", skuName: "Ginger  Pickle 400g", mrp: "141" },
+{ account: "Police Canteen", category: "Masalas & Spices", skuCode: "GIPE2", skuName: "GINGER PASTE 200G", mrp: "65" },
+{ account: "Police Canteen", category: "Ingredients", skuCode: "GNGRC15", skuName: "Ginger Coffee 150g", mrp: "93" },
+{ account: "Police Canteen", category: "Pickles", skuCode: "HS400", skuName: "Hot &Sweet Lime Pickle 400g", mrp: "131" },
+{ account: "Police Canteen", category: "Pickles", skuCode: "LM100", skuName: "Lime  Pickle 100g", mrp: "28" },
+{ account: "Police Canteen", category: "Pickles", skuCode: "LM150", skuName: "Lime  Pickle 150g", mrp: "61" },
+{ account: "Police Canteen", category: "Pickles", skuCode: "LM200", skuName: "Lime  Pickle 200g", mrp: "56" },
+{ account: "Police Canteen", category: "Pickles", skuCode: "LM400", skuName: "Lime  Pickle 400g", mrp: "112" },
+{ account: "Police Canteen", category: "Pickles", skuCode: "LM500", skuName: "Lime Pickle 500g", mrp: "113" },
+{ account: "Police Canteen", category: "Pickles", skuCode: "LM900", skuName: "Lime  Pickle 900g", mrp: "187" },
+{ account: "Police Canteen", category: "Ingredients", skuCode: "MCR04", skuName: "Macaroni 400g", mrp: "62" },
+{ account: "Police Canteen", category: "Ingredients", skuCode: "MCR05", skuName: "Macaroni 200g", mrp: "34" },
+{ account: "Police Canteen", category: "Ingredients", skuCode: "MCR08", skuName: "Macaroni 800g", mrp: "128" },
+{ account: "Police Canteen", category: "Pickles", skuCode: "MM400", skuName: "Kaduku Mango Pickle 400g", mrp: "121" },
+{ account: "Police Canteen", category: "Pickles", skuCode: "PR150", skuName: "Prawn Pickle 150g", mrp: "103" },
+{ account: "Police Canteen", category: "Pickles", skuCode: "PR200", skuName: "Prawn Pickle 200g", mrp: "108" },
+{ account: "Police Canteen", category: "Pickles", skuCode: "PR400", skuName: "Prawn Pickle 400g", mrp: "225" },
+{ account: "Police Canteen", category: "Pickles", skuCode: "PR500", skuName: "Prawn Pickle 500g", mrp: "253" },
+{ account: "Police Canteen", category: "Ingredients", skuCode: "SCY03", skuName: "Soya Chunks 200g", mrp: "49" },
+{ account: "Police Canteen", category: "Ingredients", skuCode: "SCYCN02", skuName: "Soya Chunks Nano 200g", mrp: "49" },
+{ account: "Police Canteen", category: "Pickles", skuCode: "TM150", skuName: "Tender Mango  Pickle 150g", mrp: "103" },
+{ account: "Police Canteen", category: "Pickles", skuCode: "TM200", skuName: "Tender Mango Pickle 200g", mrp: "103" },
+{ account: "Police Canteen", category: "Pickles", skuCode: "TM400", skuName: "Tender Mango  Pickle 400g", mrp: "234" },
+{ account: "Police Canteen", category: "Pickles", skuCode: "TM500", skuName: "Tender Mango Pickle 500g", mrp: "253" },
+{ account: "Police Canteen", category: "Flours", skuCode: "ADA2M", skuName: "Rice Palada 200g", mrp: "45" },
+{ account: "Police Canteen", category: "Flours", skuCode: "ADA5M", skuName: "Rice Palada 500g", mrp: "99" },
+{ account: "Police Canteen", category: "Flours", skuCode: "ARN05", skuName: "Red Aval 500g", mrp: "79" },
+{ account: "Police Canteen", category: "Flours", skuCode: "ART05", skuName: "Aval Red Thick 500g", mrp: "79" },
+{ account: "Police Canteen", category: "Ingredients", skuCode: "ASFTP05", skuName: "Asafoetida Powder 50g", mrp: "89" },
+{ account: "Police Canteen", category: "Flours", skuCode: "AWN05", skuName: "White  Aval 500g", mrp: "73" },
+{ account: "Police Canteen", category: "Flours", skuCode: "AWT04", skuName: "Aval White Thick 400g", mrp: "59" },
+{ account: "Police Canteen", category: "Masalas & Spices", skuCode: "BMP10", skuName: "Biriyani Masala 100g", mrp: "60" },
+{ account: "Police Canteen", category: "Porridge", skuCode: "BRMB5", skuName: "Bran Rich Matta Broken Rice 500g", mrp: "51" },
+{ account: "Police Canteen", category: "Flours", skuCode: "CATA1", skuName: "Chakki Fresh Atta 1kg", mrp: "79" },
+{ account: "Police Canteen", category: "Flours", skuCode: "CATA2", skuName: "Chakki Fresh Atta 2kg", mrp: "155" },
+{ account: "Police Canteen", category: "Flours", skuCode: "CATA5", skuName: "Chakki Fresh Atta 5kg", mrp: "379" },
+{ account: "Police Canteen", category: "Masalas & Spices", skuCode: "CHM10", skuName: "Chicken Masala 100g", mrp: "55" },
+{ account: "Police Canteen", category: "Masalas & Spices", skuCode: "CHP25", skuName: "Chilli Powder 250g", mrp: "109" },
+{ account: "Police Canteen", category: "Masalas & Spices", skuCode: "CIP10", skuName: "Chilli Powder 100g", mrp: "44" },
+{ account: "Police Canteen", category: "Grain", skuCode: "CMB01", skuName: "Cheff Mate 1kg", mrp: "249" },
+{ account: "Police Canteen", category: "Masalas & Spices", skuCode: "COP10", skuName: "Coriander Powder 100g", mrp: "33" },
+{ account: "Police Canteen", category: "Masalas & Spices", skuCode: "COP25", skuName: "Coriander Powder 250g", mrp: "81" },
+{ account: "Police Canteen", category: "Flours", skuCode: "CPP01", skuName: "Chemba Puttu Podi 1kg", mrp: "135" },
+{ account: "Police Canteen", category: "Flours", skuCode: "CPP05", skuName: "Chemba Puttu Podi  500g", mrp: "69" },
+{ account: "Police Canteen", category: "Flours", skuCode: "CPU05", skuName: "Corn Puttu Podi  500g", mrp: "69" },
+{ account: "Police Canteen", category: "Masalas & Spices", skuCode: "EGM10", skuName: "Egg Roast Masala 100g", mrp: "48" },
+{ account: "Police Canteen", category: "Flours", skuCode: "ESY05", skuName: "Easy Palappam Mix  500g", mrp: "59" },
+{ account: "Police Canteen", category: "Flours", skuCode: "ESYP1", skuName: "Easy Palappam Mix 1Kg", mrp: "109" },
+{ account: "Police Canteen", category: "Flours", skuCode: "FGRAD02", skuName: "Ribbon Ada 200g", mrp: "54" },
+{ account: "Police Canteen", category: "Masalas & Spices", skuCode: "FHM10", skuName: "Fish Masala 100g", mrp: "55" },
+{ account: "Police Canteen", category: "Masalas & Spices", skuCode: "GMA50", skuName: "Garam Masala 50g", mrp: "55" },
+{ account: "Police Canteen", category: "Flours", skuCode: "IP1KG", skuName: "Easy Idiyappam Powder 1 Kg", mrp: "112" },
+{ account: "Police Canteen", category: "Flours", skuCode: "IP500", skuName: "Easy Idiyappam Powder 500g", mrp: "59" },
+{ account: "Police Canteen", category: "Ingredients", skuCode: "JP400", skuName: "Jaggery Powder 400g", mrp: "69" },
+{ account: "Police Canteen", category: "Masalas & Spices", skuCode: "KC100", skuName: "Kashmiri Chilli Powder 100g", mrp: "68" },
+{ account: "Police Canteen", category: "Flours", skuCode: "LVER40", skuName: "Long Vermicelly 400g", mrp: "60" },
+{ account: "Police Canteen", category: "Porridge", skuCode: "MAB50", skuName: "Matta Broken Rice Super 500g", mrp: "62" },
+{ account: "Police Canteen", category: "Porridge", skuCode: "MBE01", skuName: "Matta Broken Rice 1kg", mrp: "119" },
+{ account: "Police Canteen", category: "Porridge", skuCode: "MBEH5", skuName: "Matta Broken Rice 500g", mrp: "64" },
+{ account: "Police Canteen", category: "Grain", skuCode: "MCB01", skuName: "Jeerakasala 1Kg", mrp: "319" },
+{ account: "Police Canteen", category: "Masalas & Spices", skuCode: "MTM10", skuName: "Meat Masala 100g", mrp: "55" },
+{ account: "Police Canteen", category: "Masalas & Spices", skuCode: "PP50", skuName: "Pepper Powder 50g", mrp: "85" },
+{ account: "Police Canteen", category: "Flours", skuCode: "PPO05", skuName: "Easy Pathiri Powder 500g", mrp: "59" },
+{ account: "Police Canteen", category: "Masalas & Spices", skuCode: "PPP10", skuName: "Pepper Powder 100g", mrp: "165" },
+{ account: "Police Canteen", category: "Masalas & Spices", skuCode: "PPW10", skuName: "Pickle Powder 100g", mrp: "54" },
+{ account: "Police Canteen", category: "Flours", skuCode: "PTRI1", skuName: "Easy Pathiri Powder 1Kg", mrp: "109" },
+{ account: "Police Canteen", category: "Flours", skuCode: "RAVA1", skuName: "Double Roasted Rava 1kg", mrp: "119" },
+{ account: "Police Canteen", category: "Flours", skuCode: "RAVA5", skuName: "Double Roasted Rava 500g", mrp: "59" },
+{ account: "Police Canteen", category: "Flours", skuCode: "RGIP5", skuName: "Roasted Ragi Powder 500g", mrp: "72" },
+{ account: "Police Canteen", category: "Flours", skuCode: "RGN1K", skuName: "Roasted Ragi Powder 1Kg", mrp: "132" },
+{ account: "Police Canteen", category: "Flours", skuCode: "RGPU5", skuName: "Ragi Puttupodi 500g", mrp: "73" },
+{ account: "Police Canteen", category: "Masalas & Spices", skuCode: "RMM10", skuName: "Rasam Powder 100g", mrp: "58" },
+{ account: "Police Canteen", category: "Flours", skuCode: "RPOW1", skuName: "Appam/Idiyap. Rice Flour 1kg", mrp: "99" },
+{ account: "Police Canteen", category: "Flours", skuCode: "RPOW5", skuName: "Appam/Idiyap. Rice Flour 500g", mrp: "52" },
+{ account: "Police Canteen", category: "Flours", skuCode: "RPOW5K", skuName: "Appam / Idiyappam Pathiri 5Kg", mrp: "475" },
+{ account: "Police Canteen", category: "Flours", skuCode: "RWRFR01", skuName: "Roasted White Rice Flour 1kg", mrp: "99" },
+{ account: "Police Canteen", category: "Flours", skuCode: "RWRFR02", skuName: "Roasted White Rice Flour 500g", mrp: "52" },
+{ account: "Police Canteen", category: "Masalas & Spices", skuCode: "SMP10", skuName: "Sambar Powder 100g", mrp: "51" },
+{ account: "Police Canteen", category: "Porridge", skuCode: "SWBH5", skuName: "Samba Broken  Wheat 500g", mrp: "137" },
+{ account: "Police Canteen", category: "Porridge", skuCode: "SWBO1", skuName: "Samba Broken  Wheat 1kg", mrp: "255" },
+{ account: "Police Canteen", category: "Porridge", skuCode: "SWF05", skuName: "Samba Wheat Broken - Fine 500g", mrp: "140" },
+{ account: "Police Canteen", category: "Masalas & Spices", skuCode: "TUP10", skuName: "Turmeric Powder 100g", mrp: "39" },
+{ account: "Police Canteen", category: "Masalas & Spices", skuCode: "TUP25", skuName: "Turmeric Powder 250g", mrp: "99" },
+{ account: "Police Canteen", category: "Flours", skuCode: "VER20", skuName: "Roasted Vermicelli 200g", mrp: "29" },
+{ account: "Police Canteen", category: "Flours", skuCode: "VER40", skuName: "Roasted Vermicelli 400g", mrp: "59" },
+{ account: "Police Canteen", category: "Flours", skuCode: "VER80", skuName: "Roasted Vermicelli 800g", mrp: "117" },
+{ account: "Police Canteen", category: "Masalas & Spices", skuCode: "VGM10", skuName: "Vegetable  Masala 100g", mrp: "47" },
+{ account: "Police Canteen", category: "Porridge", skuCode: "WBF05", skuName: "Wheat Broken Fine 500g", mrp: "59" },
+{ account: "Police Canteen", category: "Porridge", skuCode: "WBO05", skuName: "Broken Wheat 500g", mrp: "59" },
+{ account: "Police Canteen", category: "Flours", skuCode: "WPP05", skuName: "Wheat Puttu Podi 500g", mrp: "75" },
+{ account: "Police Canteen", category: "Flours", skuCode: "WPU05", skuName: "White Puttu Podi 500g", mrp: "55" },
+{ account: "Police Canteen", category: "Flours", skuCode: "WPUT1", skuName: "White Puttu Podi 1kg", mrp: "99" },
+{ account: "Police Canteen", category: "Flours", skuCode: "WPUT5", skuName: "White Puttu Podi 5kg", mrp: "475" },
+{ account: "Police Canteen", category: "Ingredients", skuCode: "TMPE2P", skuName: "Indian Tamarind 200g", mrp: "60" },
+{ account: "Police Canteen", category: "Ingredients", skuCode: "TMPE5", skuName: "Indian Tamarind 500g", mrp: "149" },
+{ account: "Police Canteen", category: "Grain", skuCode: "CHS05", skuName: "CHERUMANI RICE 5KG", mrp: "348" },
+{ account: "Police Canteen", category: "Grain", skuCode: "CHS10", skuName: "CHERUMANI RICE 10KG", mrp: "690" },
+{ account: "Police Canteen", category: "Grain", skuCode: "JYA05", skuName: "JAYA RICE 5KG", mrp: "363" },
+{ account: "Police Canteen", category: "Grain", skuCode: "JYA10", skuName: "JAYA RICE 10KG", mrp: "721" },
+{ account: "Police Canteen", category: "Grain", skuCode: "JYP05", skuName: "JYOTHI VADI MATTA RICE 5KG", mrp: "379" },
+{ account: "Police Canteen", category: "Grain", skuCode: "JYP10", skuName: "JYOTHI VADI MATTA RICE 10KG", mrp: "758" },
+{ account: "Police Canteen", category: "Grain", skuCode: "PRS05", skuName: "PONNI RICE 5KG", mrp: "471" },
+{ account: "Police Canteen", category: "Grain", skuCode: "PRS10", skuName: "PONNI RICE 10KG", mrp: "935" },
+{ account: "Police Canteen", category: "Grain", skuCode: "RMP05", skuName: "UNDA MATTA RICE 5KG", mrp: "361" },
+{ account: "Police Canteen", category: "Grain", skuCode: "RMP10", skuName: "UNDA MATTA RICE 10KG", mrp: "721" },
+{ account: "Police Canteen", category: "Grain", skuCode: "SMR05", skuName: "SINGLE MATTA RICE 5KG", mrp: "348" },
+{ account: "Police Canteen", category: "Grain", skuCode: "SMR10", skuName: "SINGLE MATTA RICE 10KG", mrp: "795" },
+{ account: "Police Canteen", category: "Grain", skuCode: "SSR05", skuName: "SUREKHA RICE 5KG", mrp: "373" },
+{ account: "Police Canteen", category: "Grain", skuCode: "SSR10", skuName: "SUREKHA RICE 10KG", mrp: "739" },
+
+  
+  
   { account: "Bismi", category: "Ingredients", skuCode: "FGVIN05", skuName: "DOUBLE HORSE SYNTHTIC VINEGAR 500 ML BTL", mrp: "32" },
   { account: "Bismi", category: "Ingredients", skuCode: "fgvin01", skuName: "DOUBLE HORSE SYNTHETIC VINGAR 1 L PET", mrp: "49" },
   { account: "Bismi", category: "Payasam", skuCode: "PLD30", skuName: "DOUBLE HORSE PALADA PAYASAM MIX 300G CBD", mrp: "85" },
@@ -1235,7 +1405,27 @@ const promoMaster = [
   { account: "Lulu", skuCode: "3777", skuName: "D/H Rice Palada Payasam Mix 300g", mrp: 85, discount: 13.6, promoPrice: 71.4 },
   { account: "Lulu", skuCode: "3781", skuName: "D/Horse Semiya Pasyasam 300g", mrp: 85, discount: 13.6, promoPrice: 71.4 },
   { account: "Lulu", skuCode: "1308518", skuName: "D/H Instnt Parip Prdhmn 200g", mrp: 115, discount: 18.4, promoPrice: 96.6 },
-  { account: "Lulu", skuCode: "2376064", skuName: "Tender Coconut Payasam Mix 180g", mrp: 112, discount: 17.9, promoPrice: 94.1 }
+  { account: "Lulu", skuCode: "2376064", skuName: "Tender Coconut Payasam Mix 180g", mrp: 112, discount: 17.9, promoPrice: 94.1 },
+
+{ account: "Nesto", skuCode: "485911", skuName: "APPAM IDIYAPPAM 5KG", mrp: 475, discount: 70, promoPrice: 405 },
+{ account: "Nesto", skuCode: "485948", skuName: "WHITE PUTTU 5KG", mrp: 475, discount: 70, promoPrice: 405 },
+{ account: "Nesto", skuCode: "102390", skuName: "WHITE PUTTU 1KG", mrp: 99, discount: 15, promoPrice: 84 },
+{ account: "Nesto", skuCode: "102384", skuName: "ROASTED RAVA 1KG", mrp: 110, discount: 15, promoPrice: 95 },
+{ account: "Nesto", skuCode: "102385", skuName: "APPAM/IDIYAPPAM 1KG", mrp: 99, discount: 15, promoPrice: 84 },
+{ account: "Nesto", skuCode: "451238", skuName: "EASY IDIYAPPAM 1KG", mrp: 112, discount: 17, promoPrice: 95 },
+{ account: "Nesto", skuCode: "485943", skuName: "CHICKEN MASALA 100GM", mrp: 54, discount: 8, promoPrice: 46 },
+{ account: "Nesto", skuCode: "485957", skuName: "SAMABAR POWDER 100GM", mrp: 49, discount: 8, promoPrice: 41 },
+{ account: "Nesto", skuCode: "485982", skuName: "MEAT MASALA 100GM", mrp: 54, discount: 8, promoPrice: 46 },
+{ account: "Nesto", skuCode: "1084192", skuName: "JAGGERY POWDER 400GM", mrp: 69, discount: 10, promoPrice: 59 },
+{ account: "Nesto", skuCode: "1084191", skuName: "INSATANT SADHYA PALADA 200GM", mrp: 95, discount: 12, promoPrice: 83 },
+{ account: "Nesto", skuCode: "163291", skuName: "PALADA PAYASAM MIX 300GM", mrp: 95, discount: 12, promoPrice: 83 },
+{ account: "Nesto", skuCode: "214554", skuName: "RICE PALADA PAYASAM MIX 300GM", mrp: 95, discount: 12, promoPrice: 83 },
+{ account: "Nesto", skuCode: "157699", skuName: "VERMICELLI KHEER MIX 300GM", mrp: 95, discount: 12, promoPrice: 83 },
+{ account: "Nesto", skuCode: "1127060", skuName: "INSTANT PARIPPU PREDHAMAN 200GM", mrp: 115, discount: 16, promoPrice: 99 },
+{ account: "Nesto", skuCode: "1424188", skuName: "TENDER COCONUT PAYASAM 180GM", mrp: 112, discount: 16, promoPrice: 96 }
+
+
+
 ];
 
 // ===== STATE =====
@@ -1435,11 +1625,13 @@ el.innerText="Not Running";el.style.color="red";
 }
 
 updatePromoSummary();
+  updateRating();
 }
 
 function updateTalker(code,val){
 if(!promoData[code]) promoData[code]={};
 promoData[code].talker=val;
+  updateRating();
 }
 
 function updatePromoSummary(){
@@ -1454,8 +1646,65 @@ if(d && d.price<=p.promoPrice) ok++;
 promoPct.innerText=promos.length?((ok/promos.length)*100).toFixed(1):0;
 }
 
+function getPromoTalkerScore(){
+
+const promos = promoMaster.filter(x=>x.account===account.value);
+if(!promos.length) return 2;
+
+let score = 0;
+
+promos.forEach(p=>{
+const d = promoData[p.skuCode];
+
+if(d && d.price && d.price <= p.promoPrice){
+score += 1; // promo running
+
+if(d.talker === "Yes") score += 1; // talker present
+}
+});
+
+// max possible = 2 * promos.length
+const pct = promos.length ? (score / (promos.length * 2)) : 0;
+
+return pct * 2; // out of 2
+}
+
+function getEyeLevelScore(){
+
+if(!shelfReportData.length) return 0;
+
+let count = 0;
+
+shelfReportData.forEach(r=>{
+if(r.eyeLevel === "Yes") count++;
+});
+
+const pct = count / shelfReportData.length;
+
+return pct * 2; // out of 2
+}
+
+function getVisibilityScore(){
+
+if(!shelfReportData.length) return 0;
+
+let total = 0;
+
+shelfReportData.forEach(r=>{
+total += Number(r.additionalVisibility) || 0;
+});
+
+// define max benchmark (tunable)
+const MAX_VISIBILITY = 10;
+
+const pct = Math.min(total / MAX_VISIBILITY, 1);
+
+return pct * 1; // out of 1
+}
+
 // ===== RATING =====
 function updateRating(){
+
 let a=0,c=0;
 
 Object.keys(selectedProductsByCategory).forEach(cat=>{
@@ -1470,7 +1719,48 @@ let s=0;
 shelfReportData.forEach(x=>s+=parseFloat(x.sharePct));
 const avgS=shelfReportData.length?s/shelfReportData.length:0;
 
-rating.innerText=((avgA/100)*4+(avgS/100)*4+2).toFixed(1);
+// ===== NEW WEIGHTED LOGIC =====
+const availabilityScore = (avgA/100) * 2.5;
+const sosScore = (avgS/100) * 2.5;
+const promoScore = getPromoTalkerScore();
+const eyeScore = getEyeLevelScore();
+const visScore = getVisibilityScore();
+
+let final = availabilityScore + sosScore + promoScore + eyeScore + visScore;
+
+// cap
+final = Math.min(final, 10);
+
+rating.innerText = final.toFixed(1);
+
+// ===== LABEL =====
+updateRatingLabel(final);
+}
+
+function updateRatingLabel(score){
+
+let label = "";
+let color = "";
+
+if(score >= 9){
+label = "Excellent";
+color = "green";
+}
+else if(score >= 7){
+label = "Good";
+color = "blue";
+}
+else if(score >= 4){
+label = "Average";
+color = "orange";
+}
+else{
+label = "Poor";
+color = "red";
+}
+
+ratingLabel.innerText = label;
+ratingLabel.style.color = color;
 }
 
 // ===== FILE NAME =====
